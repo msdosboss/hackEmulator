@@ -1,3 +1,6 @@
+debug: main.c cpu.c
+	gcc -g main.c cpu.c -o main
+
 all: main.o cpu.o
 	gcc main.o cpu.o -o main
 

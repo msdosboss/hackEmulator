@@ -28,10 +28,11 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         uint16_t *memory_out, uint8_t *write_memory, uint16_t *address_out, uint16_t *PC){
     uint8_t is_C_instruction = (uint8_t)((instruction & 0b1000000000000000) >> 15);
 
+    printf("instruction = %.16b\n", instruction);
     if (is_C_instruction){
         //ALU Logic
         uint8_t zx, nx, zy, ny, f, no, zr, ng;
-        parseALUMicroCodes(instruction, &zx, &nx, &zy, &nx, &f, &no);
+        parseALUMicroCodes(instruction, &zx, &nx, &zy, &ny, &f, &no);
         uint8_t is_M_register_input = (instruction >> 12) & 1;
         uint16_t alu_output;
 
@@ -105,6 +106,7 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         *write_memory = 0;
         *memory_out = 0;
         *address_out = cpu->a_register;
+        cpu->PC++;
         *PC = cpu->PC;
     }
 
