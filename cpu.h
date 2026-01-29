@@ -1,3 +1,6 @@
+#ifndef CPU_H
+#define CPU_H
+
 #include <stdint.h>
 #include <stdio.h>
 
@@ -14,3 +17,5 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
 uint16_t alu(uint16_t input_x, uint16_t input_y, uint8_t zx, uint8_t nx, uint8_t zy, uint8_t ny, uint8_t f, uint8_t no,
              uint8_t *zr, uint8_t *ng);
 void parseALUMicroCodes(uint16_t instruction, uint8_t *zx, uint8_t *nx, uint8_t *zy, uint8_t *ny, uint8_t *f, uint8_t *no);
+
+#endif
