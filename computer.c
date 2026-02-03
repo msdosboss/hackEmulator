@@ -80,7 +80,7 @@ void computerLoop(struct HackComputer *computer, int n){
         computer->instruction = computer->rom[computer->pc];
         computer->memory_in = computer->ram[computer->address_out]; 
         cpuTick(&(computer->cpu), computer->instruction, computer->memory_in, computer->reset, &(computer->memory_out), &(computer->write_out), &(computer->address_out), &(computer->pc));
-        printCPU(&(computer->cpu));
+        //printCPU(&(computer->cpu));
         if(computer->write_out){
             computer->ram[computer->address_out] = computer->memory_out;
         }
