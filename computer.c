@@ -24,6 +24,7 @@ char **parseFile(char *file_name){
     file = fopen(file_name, "r");
     i = 0;
     while(fgets(instructions_str[i], MAX_LINE_LEN, file) != NULL){
+        instructions_str[i][strcspn(instructions_str[i], "\r\n")] = '\0';
         i++;
     }
     fclose(file);

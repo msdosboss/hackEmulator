@@ -3,17 +3,18 @@
 
 #include "cpu.h"
 #include <stdlib.h>
+#include <string.h>
 
 struct HackComputer {
     struct CPU cpu;
-    uint16_t ram[0xFFFF];
+    int16_t ram[0xFFFF];
     uint16_t rom[0x7FFF];  
-    uint16_t memory_out;
+    int16_t memory_out;
     uint16_t address_out; 
     uint16_t pc;
     uint8_t write_out;
 
-    uint16_t memory_in;
+    int16_t memory_in;
     uint8_t reset;
     uint16_t instruction;
 };

@@ -4,9 +4,9 @@ int main(){
 
     struct HackComputer computer;
 
-    initComputer(&computer, "screenTest.out");
+    initComputer(&computer, "b.out");
 
-    computerLoop(&computer, 10);
+    //computerLoop(&computer, 20);
 
     SDL_Window *window = initDisplay();
     SDL_Renderer *rend = initRender(window);
@@ -79,8 +79,8 @@ void displayLoop(SDL_Window *window, SDL_Renderer *rend, SDL_Texture *texture, u
     uint8_t running = 1;
     int fps = 60;
     // hz here is cycles per minute
-    //int cpu_hz = 1000000;
-    int cpu_hz = 100000;
+    int cpu_hz = 1000000;
+    //int cpu_hz = 100000;
     int cycles_per_frame = cpu_hz / fps;
     uint32_t frame_time = 1000 / fps;
     while (running){
@@ -142,7 +142,7 @@ SDL_Window *initDisplay(){
 		return 0;
 	}
 	/* Create a window */
-	SDL_Window* wind = SDL_CreateWindow("Hello Platformer!",
+	SDL_Window* wind = SDL_CreateWindow("Hack Computer",
 				      SDL_WINDOWPOS_CENTERED,
 				      SDL_WINDOWPOS_CENTERED,
 				      WIDTH, HEIGHT, 0);

@@ -1,5 +1,5 @@
 debug: main.c cpu.c computer.c
-	gcc -g main.c cpu.c computer.c -o main
+	gcc -g main.c cpu.c computer.c -lSDL2 -o main
 
 all: main.o cpu.o computer.o
 	gcc main.o cpu.o computer.o -lSDL2 -o main

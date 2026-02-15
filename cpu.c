@@ -25,7 +25,7 @@ void parseALUMicroCodes(uint16_t instruction, uint8_t *zx, uint8_t *nx, uint8_t 
 
 
 void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8_t reset, 
-        uint16_t *memory_out, uint8_t *write_memory, uint16_t *address_out, uint16_t *PC){
+        int16_t *memory_out, uint8_t *write_memory, uint16_t *address_out, uint16_t *PC){
     uint8_t is_C_instruction = (uint8_t)((instruction & 0b1000000000000000) >> 15);
 
     //printf("instruction = %.16b\n", instruction);
@@ -34,7 +34,7 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         uint8_t zx, nx, zy, ny, f, no, zr, ng;
         parseALUMicroCodes(instruction, &zx, &nx, &zy, &ny, &f, &no);
         uint8_t is_M_register_input = (instruction >> 12) & 1;
-        uint16_t alu_output;
+        int16_t alu_output;
 
         if(is_M_register_input){
             alu_output = alu(cpu->d_register, memory_input, zx, nx, zy, ny, f, no, &zr, &ng);
@@ -49,23 +49,22 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         uint8_t is_jmp_if_eq = (instruction >> 1) & 1;
         uint8_t is_jmp_if_lt = (instruction >> 2) & 1;
 
-        uint8_t is_alu_output_neg = (uint8_t)((alu_output & 0b1000000000000000) >> 15);
 
         //if no special case we just want to increase PC by one
         cpu->PC++;
 
         if(is_jmp_if_grt){
-            if(!is_alu_output_neg){
+            if(!zr && !ng){
                 cpu->PC = cpu->a_register;
             }
         }
         if(is_jmp_if_eq){
-            if(alu_output == 0){
+            if(zr){
                 cpu->PC = cpu->a_register;
             }
         }
         if(is_jmp_if_lt){
-            if(is_alu_output_neg){
+            if(ng){
                 cpu->PC = cpu->a_register;
             }
         }
@@ -88,13 +87,13 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         }
 
         //write to address_out before writing cpu->a_register 
-        *address_out = cpu->a_register;
         if(is_dest_A_reg){
             cpu->a_register = alu_output;
         }
         if(is_dest_D_reg){
             cpu->d_register = alu_output;
         }
+        *address_out = cpu->a_register;
 
 
     }
@@ -112,7 +111,7 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
 
 }
 
-uint16_t alu(uint16_t input_x, uint16_t input_y, uint8_t zx, uint8_t nx, uint8_t zy, uint8_t ny, uint8_t f, uint8_t no,
+int16_t alu(int16_t input_x, int16_t input_y, uint8_t zx, uint8_t nx, uint8_t zy, uint8_t ny, uint8_t f, uint8_t no,
              uint8_t *zr, uint8_t *ng){
     if(zx){
         input_x = 0;
@@ -130,7 +129,7 @@ uint16_t alu(uint16_t input_x, uint16_t input_y, uint8_t zx, uint8_t nx, uint8_t
         input_y = ~input_y;
     }
 
-    uint16_t out;
+    int16_t out;
     if(f){
         out = input_x + input_y;
     }
@@ -149,7 +148,7 @@ uint16_t alu(uint16_t input_x, uint16_t input_y, uint8_t zx, uint8_t nx, uint8_t
         *zr = 0;
     }
     //checks if out is negative
-    if ((out & 0b10000000000000000)){
+    if (out < 0){
         *ng = 1;
     }
     else{
