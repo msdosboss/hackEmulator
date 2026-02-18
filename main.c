@@ -1,11 +1,15 @@
 #include "main.h"
 
-int main(){
+int main(int argc, char **argv){
 
     struct HackComputer computer;
 
-    initComputer(&computer, "b.out");
-
+    if(argc < 2){
+        initComputer(&computer, "b.out");
+    }
+    else{
+        initComputer(&computer, argv[1]);
+    }
     //computerLoop(&computer, 20);
 
     SDL_Window *window = initDisplay();
