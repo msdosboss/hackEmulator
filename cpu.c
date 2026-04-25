@@ -87,13 +87,13 @@ void cpuTick(struct CPU *cpu, uint16_t instruction, uint16_t memory_input, uint8
         }
 
         //write to address_out before writing cpu->a_register 
+        *address_out = cpu->a_register;
         if(is_dest_A_reg){
             cpu->a_register = alu_output;
         }
         if(is_dest_D_reg){
             cpu->d_register = alu_output;
         }
-        *address_out = cpu->a_register;
 
 
     }

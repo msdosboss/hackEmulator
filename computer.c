@@ -83,6 +83,7 @@ void computerLoop(struct HackComputer *computer, int n){
         cpuTick(&(computer->cpu), computer->instruction, computer->memory_in, computer->reset, &(computer->memory_out), &(computer->write_out), &(computer->address_out), &(computer->pc));
         //printCPU(&(computer->cpu));
         if(computer->write_out){
+            printf("orca: %d\n", computer->address_out);
             computer->ram[computer->address_out] = computer->memory_out;
         }
         i++;
